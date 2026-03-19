@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -50,15 +52,16 @@ class AuthorServiceIT {
 
         for (BookResponse book : authorResponse.getBooks()) {
             assertTrue(book.getComments().isEmpty());
-            assertNull(book.getPublishedOn());
 
             if (book.getBookId() == 4) {
                 assertEquals("Sense and Sensibility", book.getTitle());
                 assertEquals("3 sisters and their widowed mother", book.getContent());
+                assertEquals(LocalDate.parse("1811-01-01"), book.getPublishedOn());
             }
             else if (book.getBookId() == 5) {
                 assertEquals("Pride and Prejudice", book.getTitle());
                 assertEquals("Elizabeth Bennet navigates society, family, and marriage", book.getContent());
+                assertEquals(LocalDate.parse("1813-01-01"), book.getPublishedOn());
             }
             else {
                 fail(book.toString());

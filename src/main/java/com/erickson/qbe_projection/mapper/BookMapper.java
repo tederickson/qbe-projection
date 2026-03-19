@@ -10,6 +10,7 @@ public class BookMapper {
         bookResponse.setBookId(bookEntity.getBookId());
         bookResponse.setContent(bookEntity.getContent());
         bookResponse.setTitle(bookEntity.getTitle());
+        bookResponse.setPublishedOn(bookEntity.getPublishedOn());
 
         if (bookEntity.getComments() != null) {
             bookResponse.setComments(bookEntity.getComments().stream()
