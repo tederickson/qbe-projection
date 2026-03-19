@@ -1,4 +1,4 @@
-package com.erickson.graphql_db.model;
+package com.erickson.qbe_projection.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,15 +24,12 @@ public final class AuthorEntity {
     @GeneratedValue
     Long authorId;
 
-    // Camel case resolves to column "first_name"
     String firstName;
     String lastName;
     String email;
-
-    // Resolves to column "username"
     String username;
 
-    // Only fetch all related Books if GraphQl needs the information
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    // Always fetch all related Books - verify the projection does not fetch books
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     List<BookEntity> books;
 }

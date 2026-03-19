@@ -1,4 +1,4 @@
-package com.erickson.graphql_db.model;
+package com.erickson.qbe_projection.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

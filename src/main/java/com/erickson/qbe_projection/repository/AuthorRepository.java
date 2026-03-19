@@ -1,10 +1,10 @@
-package com.erickson.graphql_db.repository;
+package com.erickson.qbe_projection.repository;
 
-import com.erickson.graphql_db.model.AuthorEntity;
+import com.erickson.qbe_projection.model.AuthorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
-import org.springframework.graphql.data.GraphQlRepository;
+import org.springframework.stereotype.Repository;
 
-@GraphQlRepository
+@Repository
 public interface AuthorRepository extends JpaRepository<AuthorEntity, Long>, QueryByExampleExecutor<AuthorEntity> {
 }
