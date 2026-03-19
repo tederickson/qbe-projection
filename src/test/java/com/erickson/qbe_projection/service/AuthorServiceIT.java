@@ -1,11 +1,14 @@
 package com.erickson.qbe_projection.service;
 
+import com.erickson.qbe_projection.dto.AuthorRequest;
 import com.erickson.qbe_projection.dto.AuthorResponse;
+import com.erickson.qbe_projection.dto.AuthorResponses;
 import com.erickson.qbe_projection.dto.BookResponse;
 import com.erickson.qbe_projection.dto.CommentResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
-// @Sql("/data/InitializeTests.sql")
 class AuthorServiceIT {
 
     @Autowired
@@ -134,5 +136,63 @@ class AuthorServiceIT {
             }
         }
         assertEquals(3, authorResponse.getBooks().size());
+    }
+
+    @Test
+    void findBy_MissingPagination() {
+        AuthorRequest authorRequest = new AuthorRequest();
+        authorRequest.setUsername("alexandre");
+        AuthorResponses authorResponses = authorService.findBy(authorRequest);
+
+
+        assertEquals(1, authorResponses.getTotalElements());
+        assertEquals(0, authorResponses.getCurrentPage());
+        assertEquals(1, authorResponses.getTotalPages());
+        assertEquals(1, authorResponses.getAuthors().size());
+
+        AuthorResponse authorResponse = authorResponses.getAuthors().getFirst();
+        assertEquals(2L, authorResponse.getAuthorId());
+        assertEquals("Alexandre", authorResponse.getFirstName());
+        assertEquals("Dumas", authorResponse.getLastName());
+        assertEquals("alexandre", authorResponse.getUsername());
+        assertEquals("alex@test.net", authorResponse.getEmail());
+        assertEquals(3, authorResponse.getBooks().size());
+    }
+
+    @Test
+    void findBy_FirstAndLastName() {
+        AuthorRequest authorRequest = new AuthorRequest();
+        authorRequest.setFirstName("Charles");
+        authorRequest.setLastName("Dickens");
+        authorRequest.setPageable(PageRequest.of(0, 3));
+        AuthorResponses authorResponses = authorService.findBy(authorRequest);
+
+
+        assertEquals(1, authorResponses.getTotalElements());
+        assertEquals(0, authorResponses.getCurrentPage());
+        assertEquals(1, authorResponses.getTotalPages());
+        assertEquals(1, authorResponses.getAuthors().size());
+
+        AuthorResponse authorResponse = authorResponses.getAuthors().getFirst();
+        assertEquals(4L, authorResponse.getAuthorId());
+        assertEquals("Charles", authorResponse.getFirstName());
+        assertEquals("Dickens", authorResponse.getLastName());
+        assertEquals("charles", authorResponse.getUsername());
+        assertEquals("charles@test.net", authorResponse.getEmail());
+        assertTrue(authorResponse.getBooks().isEmpty());
+    }
+
+    @Test
+    void findBy_PageNotFound() {
+        AuthorRequest authorRequest = new AuthorRequest();
+        authorRequest.setFirstName("Charles");
+        authorRequest.setLastName("Dickens");
+        authorRequest.setPageable(PageRequest.of(10, 3));
+        AuthorResponses authorResponses = authorService.findBy(authorRequest);
+
+        assertEquals(1, authorResponses.getTotalElements());
+        assertEquals(10, authorResponses.getCurrentPage());
+        assertEquals(1, authorResponses.getTotalPages());
+        assertTrue(authorResponses.getAuthors().isEmpty());
     }
 }

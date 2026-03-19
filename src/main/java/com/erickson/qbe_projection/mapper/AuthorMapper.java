@@ -1,5 +1,6 @@
 package com.erickson.qbe_projection.mapper;
 
+import com.erickson.qbe_projection.dto.AuthorRequest;
 import com.erickson.qbe_projection.dto.AuthorResponse;
 import com.erickson.qbe_projection.model.AuthorEntity;
 
@@ -19,5 +20,16 @@ public class AuthorMapper {
                                             .toList());
         }
         return authorResponse;
+    }
+
+    public static AuthorEntity mapAuthorRequestToAuthorEntity(AuthorRequest authorRequest) {
+        AuthorEntity authorEntity = new AuthorEntity();
+
+        authorEntity.setFirstName(authorRequest.getFirstName());
+        authorEntity.setLastName(authorRequest.getLastName());
+        authorEntity.setEmail(authorRequest.getEmail());
+        authorEntity.setUsername(authorRequest.getUsername());
+
+        return authorEntity;
     }
 }
