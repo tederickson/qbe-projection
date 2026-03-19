@@ -11,6 +11,7 @@ public class AuthorMapper {
         authorResponse.setFirstName(authorEntity.getFirstName());
         authorResponse.setLastName(authorEntity.getLastName());
         authorResponse.setEmail(authorEntity.getEmail());
+        authorResponse.setUsername(authorEntity.getUsername());
 
         if (authorEntity.getBooks() != null) {
             authorResponse.setBooks(authorEntity.getBooks().stream()
