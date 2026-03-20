@@ -6,6 +6,7 @@ import com.erickson.qbe_projection.dto.AuthorResponse;
 import com.erickson.qbe_projection.dto.AuthorResponses;
 import com.erickson.qbe_projection.dto.BookResponse;
 import com.erickson.qbe_projection.dto.CommentResponse;
+import com.erickson.qbe_projection.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -22,6 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -33,7 +35,8 @@ class AuthorServiceIT {
 
     @Test
     void findById_NotFound() {
-        assertNull(authorService.findById(-1001L));
+       var exception = assertThrows(ResourceNotFoundException.class, () -> authorService.findById(-1001L));
+       assertEquals("unable to find -1001", exception.getMessage());
     }
 
     @Test

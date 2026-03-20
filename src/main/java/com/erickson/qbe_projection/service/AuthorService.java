@@ -4,6 +4,7 @@ import com.erickson.qbe_projection.dto.AuthorDTO;
 import com.erickson.qbe_projection.dto.AuthorRequest;
 import com.erickson.qbe_projection.dto.AuthorResponse;
 import com.erickson.qbe_projection.dto.AuthorResponses;
+import com.erickson.qbe_projection.exception.ResourceNotFoundException;
 import com.erickson.qbe_projection.mapper.AuthorMapper;
 import com.erickson.qbe_projection.model.AuthorEntity;
 import com.erickson.qbe_projection.repository.AuthorRepository;
@@ -29,7 +30,8 @@ public class AuthorService {
     public AuthorResponse findById(Long id) {
         Optional<AuthorEntity> authorEntityOptional = authorRepository.findById(id);
 
-        return authorEntityOptional.map(AuthorMapper::mapAuthorEntityToAuthorResponse).orElse(null);
+        return authorEntityOptional.map(AuthorMapper::mapAuthorEntityToAuthorResponse)
+                .orElseThrow(() -> new ResourceNotFoundException("unable to find " + id));
     }
 
     @Transactional
