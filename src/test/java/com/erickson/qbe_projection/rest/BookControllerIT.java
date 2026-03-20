@@ -62,4 +62,27 @@ class BookControllerIT {
             assertTrue(bookResponse.getTitle().toLowerCase().contains("the"));
         }
     }
+
+    @Test
+    void findBy_withSpaces() {
+        BookRequest bookRequest = new BookRequest();
+        bookRequest.setTitle("THE ");
+
+        String url = createURLWithPort("/v1/books/");
+        BookResponses bookResponses = restTemplate.postForEntity(url, bookRequest, BookResponses.class).getBody();
+
+        assertNotNull(bookResponses);
+
+        assertEquals(3, bookResponses.getTotalElements());
+        assertEquals(0, bookResponses.getCurrentPage());
+        assertEquals(1, bookResponses.getTotalPages());
+        assertEquals(3, bookResponses.getBooks().size());
+
+        for (BookResponse bookResponse : bookResponses.getBooks()) {
+            assertTrue(bookResponse.getTitle().toLowerCase().contains("the"));
+        }
+        for (BookResponse bookResponse : bookResponses.getBooks()) {
+            assertTrue(bookResponse.getTitle().toLowerCase().contains("the"));
+        }
+    }
 }
