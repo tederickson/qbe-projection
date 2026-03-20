@@ -59,7 +59,7 @@ class BookControllerIT {
             assertTrue(bookResponse.getTitle().toLowerCase().contains("the"));
         }
         for (BookResponse bookResponse : bookResponses.getBooks()) {
-            assertTrue(bookResponse.getTitle().toLowerCase().contains("the"));
+            assertTrue(bookResponse.getTitle().toLowerCase().startsWith("the"));
         }
     }
 
@@ -82,7 +82,7 @@ class BookControllerIT {
             assertTrue(bookResponse.getTitle().toLowerCase().contains("the"));
         }
         for (BookResponse bookResponse : bookResponses.getBooks()) {
-            assertTrue(bookResponse.getTitle().toLowerCase().contains("the"));
+            assertTrue(bookResponse.getTitle().toLowerCase().contains("the "));
         }
     }
 }
