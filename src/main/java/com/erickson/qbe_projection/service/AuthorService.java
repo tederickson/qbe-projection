@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +23,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthorService {
     private final AuthorRepository authorRepository;
-
-    private static Pageable getPageable(AuthorRequest authorRequest) {
-        int pageSize = authorRequest.getPageSize() == 0 ? 10 : authorRequest.getPageSize();
-
-        if (authorRequest.getSort() == null) {
-            return PageRequest.of(authorRequest.getPageNumber(), pageSize);
-        }
-
-        return PageRequest.of(authorRequest.getPageNumber(), pageSize, authorRequest.getSort());
-    }
 
     @Transactional
     public AuthorResponse findById(Long id) {
@@ -48,18 +37,17 @@ public class AuthorService {
         AuthorEntity authorEntity = AuthorMapper.mapAuthorRequestToAuthorEntity(authorRequest);
         Example<AuthorEntity> example = Example.of(authorEntity);
 
-        final Pageable pageable = getPageable(authorRequest);
+        final Pageable pageable = PageableUtil.getPageable(authorRequest);
         Page<AuthorEntity> results = authorRepository.findAll(example, pageable);
 
         AuthorResponses authorResponses = new AuthorResponses();
 
-        authorResponses.setCurrentPage(results.getNumber());
-        authorResponses.setTotalPages(results.getTotalPages());
-        authorResponses.setTotalElements(results.getTotalElements());
+        PageableUtil.buildPageableFromAuthors(authorResponses, results);
         authorResponses.setAuthors(results.stream().map(AuthorMapper::mapAuthorEntityToAuthorResponse).toList());
 
         return authorResponses;
     }
+
 
     public AuthorDTOs findByFirstName(String firstName) {
         if (firstName == null || firstName.isEmpty()) {
