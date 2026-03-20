@@ -1,8 +1,9 @@
 package com.erickson.qbe_projection.dto;
 
 import lombok.Data;
-import org.springframework.data.domain.Sort;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public final class AuthorRequest extends PageableRequest {
     private String firstName;
