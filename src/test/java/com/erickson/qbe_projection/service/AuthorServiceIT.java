@@ -35,8 +35,8 @@ class AuthorServiceIT {
 
     @Test
     void findById_NotFound() {
-       var exception = assertThrows(ResourceNotFoundException.class, () -> authorService.findById(-1001L));
-       assertEquals("unable to find -1001", exception.getMessage());
+        var exception = assertThrows(ResourceNotFoundException.class, () -> authorService.findById(-1001L));
+        assertEquals("Unable to find -1001", exception.getMessage());
     }
 
     @Test

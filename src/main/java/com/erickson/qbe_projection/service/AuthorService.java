@@ -31,7 +31,7 @@ public class AuthorService {
         Optional<AuthorEntity> authorEntityOptional = authorRepository.findById(id);
 
         return authorEntityOptional.map(AuthorMapper::mapAuthorEntityToAuthorResponse)
-                .orElseThrow(() -> new ResourceNotFoundException("unable to find " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to find " + id));
     }
 
     @Transactional
