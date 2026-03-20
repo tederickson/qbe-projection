@@ -32,7 +32,7 @@ class AuthorServiceIT {
     private AuthorService authorService;
 
     @Test
-    void findById_notFound() {
+    void findById_NotFound() {
         assertNull(authorService.findById(-1001L));
     }
 
