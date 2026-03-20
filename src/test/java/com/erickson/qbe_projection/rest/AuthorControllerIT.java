@@ -1,6 +1,7 @@
 package com.erickson.qbe_projection.rest;
 
 import com.erickson.qbe_projection.QbeProjectionApplication;
+import com.erickson.qbe_projection.dto.AuthorDTO;
 import com.erickson.qbe_projection.dto.AuthorRequest;
 import com.erickson.qbe_projection.dto.AuthorResponse;
 import com.erickson.qbe_projection.dto.AuthorResponses;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -122,5 +125,40 @@ class AuthorControllerIT {
         assertEquals(0, authorResponses.getCurrentPage());
         assertEquals(0, authorResponses.getTotalPages());
         assertEquals(0, authorResponses.getAuthors().size());
+    }
+
+    @Test
+    void findByFirstName_NotFound() {
+        String url = createURLWithPort("/v1/author/first_name/suess");
+        ResponseEntity<List<AuthorDTO>> responseEntity = restTemplate.exchange(url,
+                                                                               HttpMethod.GET,
+                                                                               null,
+                                                                               new ParameterizedTypeReference<>() {});
+        List<AuthorDTO> authorDTOs = responseEntity.getBody();
+
+        assertNotNull(authorDTOs);
+        assertTrue(authorDTOs.isEmpty());
+    }
+
+    @Test
+    void findByFirstName() {
+        String url = createURLWithPort("/v1/author/first_name/Agatha");
+
+        ResponseEntity<List<AuthorDTO>> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null, // HttpEntity (optional, e.g., for sending headers)
+                new ParameterizedTypeReference<>() {}
+        );
+
+        List<AuthorDTO> authorDTOs = responseEntity.getBody();
+
+        assertNotNull(authorDTOs);
+        assertEquals(1, authorDTOs.size());
+
+        AuthorDTO authorDto = authorDTOs.getFirst();
+        assertEquals("Agatha", authorDto.firstName());
+        assertEquals("Christie", authorDto.lastName());
+        assertEquals("agatha@test.net", authorDto.email());
     }
 }
