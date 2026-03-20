@@ -8,5 +8,5 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class BookResponses extends PageableResponse {
-    List<BookResponse> books;
+    private List<BookResponse> books;
 }
