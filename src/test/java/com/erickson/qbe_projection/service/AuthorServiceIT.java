@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -194,5 +196,69 @@ class AuthorServiceIT {
         assertEquals(10, authorResponses.getCurrentPage());
         assertEquals(1, authorResponses.getTotalPages());
         assertTrue(authorResponses.getAuthors().isEmpty());
+    }
+
+    @Test
+    void findBy_FirstName() {
+        final AuthorRequest authorRequest = new AuthorRequest();
+        authorRequest.setFirstName("Charles");
+
+        final int pageSize = 3;
+        final Sort sort = Sort.by(Direction.DESC, "lastName");
+        int pageNumber = 0;
+        authorRequest.setPageable(PageRequest.of(pageNumber, pageSize, sort));
+
+        AuthorResponses authorResponses = authorService.findBy(authorRequest);
+
+        assertEquals(7, authorResponses.getTotalElements());
+        assertEquals(pageNumber, authorResponses.getCurrentPage());
+        assertEquals(3, authorResponses.getTotalPages());
+        assertEquals(pageSize, authorResponses.getAuthors().size());
+
+        for (var authorResponse : authorResponses.getAuthors()) {
+            assertEquals("Charles", authorResponse.getFirstName());
+        }
+        assertEquals("Stross", authorResponses.getAuthors().get(0).getLastName());
+        assertEquals("Perrault", authorResponses.getAuthors().get(1).getLastName());
+        assertEquals("Mann", authorResponses.getAuthors().get(2).getLastName());
+
+        pageNumber++;
+        authorRequest.setPageable(PageRequest.of(pageNumber, pageSize, sort));
+        authorResponses = authorService.findBy(authorRequest);
+
+        assertEquals(7, authorResponses.getTotalElements());
+        assertEquals(pageNumber, authorResponses.getCurrentPage());
+        assertEquals(3, authorResponses.getTotalPages());
+        assertEquals(pageSize, authorResponses.getAuthors().size());
+
+        for (var authorResponse : authorResponses.getAuthors()) {
+            assertEquals("Charles", authorResponse.getFirstName());
+        }
+        assertEquals("Frazier", authorResponses.getAuthors().get(0).getLastName());
+        assertEquals("Finch", authorResponses.getAuthors().get(1).getLastName());
+        assertEquals("Dickens", authorResponses.getAuthors().get(2).getLastName());
+
+        pageNumber++;
+        authorRequest.setPageable(PageRequest.of(pageNumber, pageSize, sort));
+        authorResponses = authorService.findBy(authorRequest);
+
+        assertEquals(7, authorResponses.getTotalElements());
+        assertEquals(pageNumber, authorResponses.getCurrentPage());
+        assertEquals(3, authorResponses.getTotalPages());
+        assertEquals(1, authorResponses.getAuthors().size());
+
+        for (var authorResponse : authorResponses.getAuthors()) {
+            assertEquals("Charles", authorResponse.getFirstName());
+        }
+        assertEquals("Bowden", authorResponses.getAuthors().getFirst().getLastName());
+
+        pageNumber++;
+        authorRequest.setPageable(PageRequest.of(pageNumber, pageSize, sort));
+        authorResponses = authorService.findBy(authorRequest);
+
+        assertEquals(7, authorResponses.getTotalElements());
+        assertEquals(pageNumber, authorResponses.getCurrentPage());
+        assertEquals(3, authorResponses.getTotalPages());
+        assertEquals(0, authorResponses.getAuthors().size());
     }
 }
