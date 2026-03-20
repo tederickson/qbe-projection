@@ -22,3 +22,29 @@ of [traditional vs QBE approach](https://github.com/danvega/graphql-qbe/blob/mai
 ```bash
 mvn spring-boot:run
 ```
+
+## Controllers
+
+The AuthorController has these endpoints
+
+* Get "/id/{id}" - returns AuthorResponse
+
+* Get "/first_name/{firstName}" - returns AuthorDTOs which is a list of a Hibernate projection
+
+* Post "/" takes an AuthorRequest and returns all rows matching the parameters in an AuthorResponses object.
+    * AuthorRequest
+        * String firstName
+        * String lastName
+        * String email
+        * String username
+        * int pageNumber - which page to return
+        * int pageSize - max entries per page
+        * Sort sort - Sort ascending/descending and which fields to sort on
+
+AuthorResponses contains
+
+* List of AuthorResponse (the Author, books and comments)
+* int currentPage
+* int totalPages
+* long totalElements - total rows in the database matching the search criteria
+    
