@@ -64,9 +64,10 @@ class BookControllerIT {
     }
 
     @Test
-    void findBy_withSpaces() {
+    void findBy_WalkedOffEdge() {
         BookRequest bookRequest = new BookRequest();
         bookRequest.setTitle("THE ");
+        bookRequest.setPageNumber(200);
 
         String url = createURLWithPort("/v1/books/");
         BookResponses bookResponses = restTemplate.postForEntity(url, bookRequest, BookResponses.class).getBody();
@@ -74,15 +75,8 @@ class BookControllerIT {
         assertNotNull(bookResponses);
 
         assertEquals(3, bookResponses.getTotalElements());
-        assertEquals(0, bookResponses.getCurrentPage());
+        assertEquals(200, bookResponses.getCurrentPage());
         assertEquals(1, bookResponses.getTotalPages());
-        assertEquals(3, bookResponses.getBooks().size());
-
-        for (BookResponse bookResponse : bookResponses.getBooks()) {
-            assertTrue(bookResponse.getTitle().toLowerCase().contains("the"));
-        }
-        for (BookResponse bookResponse : bookResponses.getBooks()) {
-            assertTrue(bookResponse.getTitle().toLowerCase().contains("the "));
-        }
+        assertTrue(bookResponses.getBooks().isEmpty());
     }
 }

@@ -25,7 +25,7 @@ mvn spring-boot:run
 
 ## Controllers
 
-The AuthorController has these endpoints
+The AuthorController has these endpoints:
 
 * Get "/id/{id}" - returns AuthorResponse
 
@@ -47,4 +47,13 @@ AuthorResponses contains
 * int currentPage
 * int totalPages
 * long totalElements - total rows in the database matching the search criteria
-    
+
+The BookController has these endpoints:
+
+* Post getBooksContainingTitle( takes a BookRequest and returns all rows containing (case insensitive) title
+    * BookResponses contains:
+        * List<BookResponse> books
+        * int currentPage
+        * int totalPages
+        * long totalElements - total rows in the database matching the search criteria
+ 
