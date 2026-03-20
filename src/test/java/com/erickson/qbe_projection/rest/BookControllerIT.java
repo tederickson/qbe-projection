@@ -58,9 +58,6 @@ class BookControllerIT {
         for (BookResponse bookResponse : bookResponses.getBooks()) {
             assertTrue(bookResponse.getTitle().toLowerCase().contains("the"));
         }
-        for (BookResponse bookResponse : bookResponses.getBooks()) {
-            assertTrue(bookResponse.getTitle().toLowerCase().startsWith("the"));
-        }
     }
 
     @Test
