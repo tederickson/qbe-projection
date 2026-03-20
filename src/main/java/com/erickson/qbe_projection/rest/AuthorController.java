@@ -1,6 +1,6 @@
 package com.erickson.qbe_projection.rest;
 
-import com.erickson.qbe_projection.dto.AuthorDTO;
+import com.erickson.qbe_projection.dto.AuthorDTOs;
 import com.erickson.qbe_projection.dto.AuthorRequest;
 import com.erickson.qbe_projection.dto.AuthorResponse;
 import com.erickson.qbe_projection.dto.AuthorResponses;
@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +25,7 @@ public class AuthorController {
     }
 
     @GetMapping("/first_name/{firstName}")
-    public List<AuthorDTO> findByFirstName(@PathVariable String firstName) {
+    public AuthorDTOs findByFirstName(@PathVariable String firstName) {
         return authorService.findByFirstName(firstName);
     }
 

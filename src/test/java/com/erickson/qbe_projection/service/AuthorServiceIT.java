@@ -1,6 +1,6 @@
 package com.erickson.qbe_projection.service;
 
-import com.erickson.qbe_projection.dto.AuthorDTO;
+import com.erickson.qbe_projection.dto.AuthorDTOs;
 import com.erickson.qbe_projection.dto.AuthorRequest;
 import com.erickson.qbe_projection.dto.AuthorResponse;
 import com.erickson.qbe_projection.dto.AuthorResponses;
@@ -273,11 +273,11 @@ class AuthorServiceIT {
 
     @Test
     void findByFirstName() {
-        final List<AuthorDTO> authorResponses = authorService.findByFirstName("Charles");
-        assertEquals(7, authorResponses.size());
+        final AuthorDTOs authorResponses = authorService.findByFirstName("Charles");
+        assertEquals(7, authorResponses.authorDTOList().size());
 
         List<String> expectedLastNames = List.of("Stross", "Frazier", "Bowden", "Perrault", "Dickens", "Mann", "Finch");
-        for (var authorDto : authorResponses) {
+        for (var authorDto : authorResponses.authorDTOList()) {
             assertEquals("Charles", authorDto.firstName());
             assertTrue(expectedLastNames.contains(authorDto.lastName()));
             assertTrue(authorDto.email().contains("@"));
@@ -297,13 +297,13 @@ class AuthorServiceIT {
     @ParameterizedTest
     @NullAndEmptySource
     void findByFirstName(String firstName) {
-        final List<AuthorDTO> authorResponses = authorService.findByFirstName(firstName);
-        assertTrue(authorResponses.isEmpty());
+        var exception = assertThrows(ResourceNotFoundException.class, () -> authorService.findByFirstName(firstName));
+        assertTrue(exception.getMessage().startsWith("Unable to find ["));
     }
 
     @Test
     void findByFirstName_NotFound() {
-        final List<AuthorDTO> authorResponses = authorService.findByFirstName("firstName");
-        assertTrue(authorResponses.isEmpty());
+        final AuthorDTOs authorResponses = authorService.findByFirstName("firstName");
+        assertTrue(authorResponses.authorDTOList().isEmpty());
     }
 }

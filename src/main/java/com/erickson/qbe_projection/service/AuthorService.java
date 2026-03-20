@@ -1,6 +1,6 @@
 package com.erickson.qbe_projection.service;
 
-import com.erickson.qbe_projection.dto.AuthorDTO;
+import com.erickson.qbe_projection.dto.AuthorDTOs;
 import com.erickson.qbe_projection.dto.AuthorRequest;
 import com.erickson.qbe_projection.dto.AuthorResponse;
 import com.erickson.qbe_projection.dto.AuthorResponses;
@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -62,11 +61,11 @@ public class AuthorService {
         return authorResponses;
     }
 
-    public List<AuthorDTO> findByFirstName(String firstName) {
+    public AuthorDTOs findByFirstName(String firstName) {
         if (firstName == null || firstName.isEmpty()) {
-            return List.of();
+            throw new ResourceNotFoundException("Unable to find [" + firstName + "]");
         }
 
-        return authorRepository.findByFirstName(firstName);
+        return new AuthorDTOs(authorRepository.findByFirstName(firstName));
     }
 }
