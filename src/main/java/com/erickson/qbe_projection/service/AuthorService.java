@@ -1,5 +1,6 @@
 package com.erickson.qbe_projection.service;
 
+import com.erickson.qbe_projection.dto.AuthorDTO;
 import com.erickson.qbe_projection.dto.AuthorRequest;
 import com.erickson.qbe_projection.dto.AuthorResponse;
 import com.erickson.qbe_projection.dto.AuthorResponses;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -46,5 +48,13 @@ public class AuthorService {
         authorResponses.setAuthors(results.stream().map(AuthorMapper::mapAuthorEntityToAuthorResponse).toList());
 
         return authorResponses;
+    }
+
+    public List<AuthorDTO> findByFirstName(String firstName) {
+        if (firstName == null || firstName.isEmpty()) {
+            return List.of();
+        }
+
+        return authorRepository.findByFirstName(firstName);
     }
 }

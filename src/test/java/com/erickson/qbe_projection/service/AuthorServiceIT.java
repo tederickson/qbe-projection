@@ -1,11 +1,14 @@
 package com.erickson.qbe_projection.service;
 
+import com.erickson.qbe_projection.dto.AuthorDTO;
 import com.erickson.qbe_projection.dto.AuthorRequest;
 import com.erickson.qbe_projection.dto.AuthorResponse;
 import com.erickson.qbe_projection.dto.AuthorResponses;
 import com.erickson.qbe_projection.dto.BookResponse;
 import com.erickson.qbe_projection.dto.CommentResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Sort.Direction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -258,5 +262,35 @@ class AuthorServiceIT {
         assertEquals(pageNumber, authorResponses.getCurrentPage());
         assertEquals(3, authorResponses.getTotalPages());
         assertEquals(0, authorResponses.getAuthors().size());
+    }
+
+    @Test
+    void findByFirstName() {
+        final List<AuthorDTO> authorResponses = authorService.findByFirstName("Charles");
+        assertEquals(7, authorResponses.size());
+
+        List<String> expectedLastNames = List.of("Stross", "Frazier", "Bowden", "Perrault", "Dickens", "Mann", "Finch");
+        for (var authorDto : authorResponses) {
+            assertEquals("Charles", authorDto.firstName());
+            assertTrue(expectedLastNames.contains(authorDto.lastName()));
+            assertTrue(authorDto.email().contains("@"));
+        }
+        // Hibernate does not attempt to access the books tied to the author
+        //        Hibernate:
+        //        select
+        //              ae1_0.first_name,
+        //              ae1_0.last_name,
+        //              ae1_0.email
+        //        from
+        //        author ae1_0
+        //        where
+        //        ae1_0.first_name=?
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    void findByFirstName(String firstName) {
+        final List<AuthorDTO> authorResponses = authorService.findByFirstName(firstName);
+        assertTrue(authorResponses.isEmpty());
     }
 }
