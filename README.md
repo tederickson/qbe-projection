@@ -50,7 +50,7 @@ AuthorResponses contains
 
 The BookController has these endpoints:
 
-* Post getBooksContainingTitle( takes a BookRequest and returns all rows containing (case insensitive) title
+* Post getBooksContainingTitle(takes a BookRequest and returns all rows containing (case insensitive) title
     * BookResponses contains:
         * List<BookResponse> books
         * int currentPage
