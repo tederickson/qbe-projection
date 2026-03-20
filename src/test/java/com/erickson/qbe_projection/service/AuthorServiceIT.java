@@ -146,7 +146,6 @@ class AuthorServiceIT {
         authorRequest.setUsername("alexandre");
         AuthorResponses authorResponses = authorService.findBy(authorRequest);
 
-
         assertEquals(1, authorResponses.getTotalElements());
         assertEquals(0, authorResponses.getCurrentPage());
         assertEquals(1, authorResponses.getTotalPages());
@@ -169,7 +168,6 @@ class AuthorServiceIT {
         authorRequest.setPageable(PageRequest.of(0, 3));
         AuthorResponses authorResponses = authorService.findBy(authorRequest);
 
-
         assertEquals(1, authorResponses.getTotalElements());
         assertEquals(0, authorResponses.getCurrentPage());
         assertEquals(1, authorResponses.getTotalPages());
@@ -188,11 +186,11 @@ class AuthorServiceIT {
     void findBy_PageNotFound() {
         AuthorRequest authorRequest = new AuthorRequest();
         authorRequest.setFirstName("Charles");
-        authorRequest.setLastName("Dickens");
-        authorRequest.setPageable(PageRequest.of(10, 3));
+
+        authorRequest.setPageable(PageRequest.of(10, 25));
         AuthorResponses authorResponses = authorService.findBy(authorRequest);
 
-        assertEquals(1, authorResponses.getTotalElements());
+        assertEquals(7, authorResponses.getTotalElements());
         assertEquals(10, authorResponses.getCurrentPage());
         assertEquals(1, authorResponses.getTotalPages());
         assertTrue(authorResponses.getAuthors().isEmpty());
