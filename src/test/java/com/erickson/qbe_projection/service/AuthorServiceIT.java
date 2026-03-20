@@ -293,4 +293,10 @@ class AuthorServiceIT {
         final List<AuthorDTO> authorResponses = authorService.findByFirstName(firstName);
         assertTrue(authorResponses.isEmpty());
     }
+
+    @Test
+    void findByFirstName_NotFound() {
+        final List<AuthorDTO> authorResponses = authorService.findByFirstName("firstName");
+        assertTrue(authorResponses.isEmpty());
+    }
 }
