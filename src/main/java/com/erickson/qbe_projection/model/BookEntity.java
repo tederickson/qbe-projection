@@ -19,15 +19,18 @@ import java.util.List;
 @Data
 @ToString(exclude = "author")
 public class BookEntity {
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
-    List<CommentEntity> comments;
     @Id
     @GeneratedValue
     private Long bookId;
+
     private String title;
     private String content;
     private LocalDate publishedOn;
+
     @ManyToOne
     @JoinColumn(name = "authorId", referencedColumnName = "authorId", nullable = false)
     private AuthorEntity author;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    List<CommentEntity> comments;
 }
