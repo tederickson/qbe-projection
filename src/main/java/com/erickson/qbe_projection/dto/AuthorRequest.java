@@ -1,7 +1,7 @@
 package com.erickson.qbe_projection.dto;
 
 import lombok.Data;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Data
 public final class AuthorRequest {
@@ -10,5 +10,7 @@ public final class AuthorRequest {
     private String email;
     private String username;
 
-    private Pageable pageable;
+    private int pageNumber;
+    private int pageSize;
+    private Sort sort;
 }

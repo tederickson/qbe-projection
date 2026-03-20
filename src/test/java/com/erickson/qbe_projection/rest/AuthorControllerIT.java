@@ -1,13 +1,17 @@
 package com.erickson.qbe_projection.rest;
 
 import com.erickson.qbe_projection.QbeProjectionApplication;
+import com.erickson.qbe_projection.dto.AuthorRequest;
 import com.erickson.qbe_projection.dto.AuthorResponse;
+import com.erickson.qbe_projection.dto.AuthorResponses;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,5 +51,76 @@ class AuthorControllerIT {
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Unable to find 11111", response.getBody());
+    }
+
+    @Test
+    void findBy_MissingPagination() {
+        AuthorRequest authorRequest = new AuthorRequest();
+        authorRequest.setFirstName("Charles");
+
+        String url = createURLWithPort("/v1/author/");
+        AuthorResponses authorResponses =
+                restTemplate.postForEntity(url, authorRequest, AuthorResponses.class).getBody();
+
+        assertNotNull(authorResponses);
+        assertEquals(7, authorResponses.getTotalElements());
+        assertEquals(0, authorResponses.getCurrentPage());
+        assertEquals(1, authorResponses.getTotalPages());
+        assertEquals(7, authorResponses.getAuthors().size());
+
+        List<String> expectedLastNames = List.of("Stross", "Frazier", "Bowden", "Perrault", "Dickens", "Mann", "Finch");
+        for (var author : authorResponses.getAuthors()) {
+            assertEquals("Charles", author.getFirstName());
+            assertTrue(expectedLastNames.contains(author.getLastName()));
+            assertTrue(author.getEmail().contains("@"));
+            assertNotNull(author.getAuthorId());
+            assertTrue(author.getBooks().isEmpty());
+        }
+    }
+
+    @Test
+    void findBy_UserName() {
+        AuthorRequest authorRequest = new AuthorRequest();
+        authorRequest.setUsername("charles");
+        authorRequest.setPageNumber(0);
+        authorRequest.setPageSize(3);
+
+        String url = createURLWithPort("/v1/author/");
+        AuthorResponses authorResponses =
+                restTemplate.postForEntity(url, authorRequest, AuthorResponses.class).getBody();
+
+        assertNotNull(authorResponses);
+
+        assertEquals(1, authorResponses.getTotalElements());
+        assertEquals(0, authorResponses.getCurrentPage());
+        assertEquals(1, authorResponses.getTotalPages());
+        assertEquals(1, authorResponses.getAuthors().size());
+
+        AuthorResponse authorResponse = authorResponses.getAuthors().getFirst();
+        assertEquals(4L, authorResponse.getAuthorId());
+        assertEquals("Charles", authorResponse.getFirstName());
+        assertEquals("Dickens", authorResponse.getLastName());
+        assertEquals("charles", authorResponse.getUsername());
+        assertEquals("charles@test.net", authorResponse.getEmail());
+        assertTrue(authorResponse.getBooks().isEmpty());
+    }
+
+    @Test
+    void findBy_NotFound() {
+        AuthorRequest authorRequest = new AuthorRequest();
+        authorRequest.setUsername("dickens");
+        authorRequest.setPageNumber(0);
+        authorRequest.setPageSize(3);
+
+        String url = createURLWithPort("/v1/author/");
+        AuthorResponses authorResponses =
+                restTemplate.postForEntity(url, authorRequest, AuthorResponses.class).getBody();
+
+        assertNotNull(authorResponses);
+
+        assertEquals(0, authorResponses.getTotalElements());
+        assertEquals(0, authorResponses.getCurrentPage());
+        assertEquals(0, authorResponses.getTotalPages());
+        assertEquals(0, authorResponses.getAuthors().size());
     }
 }

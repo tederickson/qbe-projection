@@ -12,7 +12,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
@@ -172,7 +171,7 @@ class AuthorServiceIT {
         AuthorRequest authorRequest = new AuthorRequest();
         authorRequest.setFirstName("Charles");
         authorRequest.setLastName("Dickens");
-        authorRequest.setPageable(PageRequest.of(0, 3));
+        authorRequest.setPageSize(3);
         AuthorResponses authorResponses = authorService.findBy(authorRequest);
 
         assertEquals(1, authorResponses.getTotalElements());
@@ -193,8 +192,9 @@ class AuthorServiceIT {
     void findBy_PageNotFound() {
         AuthorRequest authorRequest = new AuthorRequest();
         authorRequest.setFirstName("Charles");
+        authorRequest.setPageNumber(10);
+        authorRequest.setPageSize(25);
 
-        authorRequest.setPageable(PageRequest.of(10, 25));
         AuthorResponses authorResponses = authorService.findBy(authorRequest);
 
         assertEquals(7, authorResponses.getTotalElements());
@@ -211,7 +211,10 @@ class AuthorServiceIT {
         final int pageSize = 3;
         final Sort sort = Sort.by(Direction.DESC, "lastName");
         int pageNumber = 0;
-        authorRequest.setPageable(PageRequest.of(pageNumber, pageSize, sort));
+
+        authorRequest.setPageNumber(pageNumber);
+        authorRequest.setPageSize(pageSize);
+        authorRequest.setSort(sort);
 
         AuthorResponses authorResponses = authorService.findBy(authorRequest);
 
@@ -228,7 +231,8 @@ class AuthorServiceIT {
         assertEquals("Mann", authorResponses.getAuthors().get(2).getLastName());
 
         pageNumber++;
-        authorRequest.setPageable(PageRequest.of(pageNumber, pageSize, sort));
+        authorRequest.setPageNumber(pageNumber);
+
         authorResponses = authorService.findBy(authorRequest);
 
         assertEquals(7, authorResponses.getTotalElements());
@@ -244,7 +248,7 @@ class AuthorServiceIT {
         assertEquals("Dickens", authorResponses.getAuthors().get(2).getLastName());
 
         pageNumber++;
-        authorRequest.setPageable(PageRequest.of(pageNumber, pageSize, sort));
+        authorRequest.setPageNumber(pageNumber);
         authorResponses = authorService.findBy(authorRequest);
 
         assertEquals(7, authorResponses.getTotalElements());
@@ -258,7 +262,7 @@ class AuthorServiceIT {
         assertEquals("Bowden", authorResponses.getAuthors().getFirst().getLastName());
 
         pageNumber++;
-        authorRequest.setPageable(PageRequest.of(pageNumber, pageSize, sort));
+        authorRequest.setPageNumber(pageNumber);
         authorResponses = authorService.findBy(authorRequest);
 
         assertEquals(7, authorResponses.getTotalElements());

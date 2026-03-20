@@ -26,6 +26,16 @@ import java.util.Optional;
 public class AuthorService {
     private final AuthorRepository authorRepository;
 
+    private static Pageable getPageable(AuthorRequest authorRequest) {
+        int pageSize = authorRequest.getPageSize() == 0 ? 10 : authorRequest.getPageSize();
+
+        if (authorRequest.getSort() == null) {
+            return PageRequest.of(authorRequest.getPageNumber(), pageSize);
+        }
+
+        return PageRequest.of(authorRequest.getPageNumber(), pageSize, authorRequest.getSort());
+    }
+
     @Transactional
     public AuthorResponse findById(Long id) {
         Optional<AuthorEntity> authorEntityOptional = authorRepository.findById(id);
@@ -39,7 +49,7 @@ public class AuthorService {
         AuthorEntity authorEntity = AuthorMapper.mapAuthorRequestToAuthorEntity(authorRequest);
         Example<AuthorEntity> example = Example.of(authorEntity);
 
-        Pageable pageable = authorRequest.getPageable() == null ? PageRequest.of(0, 10) : authorRequest.getPageable();
+        final Pageable pageable = getPageable(authorRequest);
         Page<AuthorEntity> results = authorRepository.findAll(example, pageable);
 
         AuthorResponses authorResponses = new AuthorResponses();
