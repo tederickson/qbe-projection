@@ -39,7 +39,7 @@ class AuthorControllerIT {
         assertEquals(authorId, authorResponse.getAuthorId());
         assertEquals("Agatha", authorResponse.getFirstName());
         assertEquals("Christie", authorResponse.getLastName());
-        assertEquals("agatha", authorResponse.getUsername());
+        assertEquals("agatha", authorResponse.getUserName());
         assertEquals("agatha@test.net", authorResponse.getEmail());
 
         assertTrue(authorResponse.getBooks().isEmpty());
@@ -83,7 +83,7 @@ class AuthorControllerIT {
     @Test
     void findBy_UserName() {
         AuthorRequest authorRequest = new AuthorRequest();
-        authorRequest.setUsername("charles");
+        authorRequest.setUserName("charles");
         authorRequest.setPageNumber(0);
         authorRequest.setPageSize(3);
 
@@ -102,7 +102,7 @@ class AuthorControllerIT {
         assertEquals(4L, authorResponse.getAuthorId());
         assertEquals("Charles", authorResponse.getFirstName());
         assertEquals("Dickens", authorResponse.getLastName());
-        assertEquals("charles", authorResponse.getUsername());
+        assertEquals("charles", authorResponse.getUserName());
         assertEquals("charles@test.net", authorResponse.getEmail());
         assertTrue(authorResponse.getBooks().isEmpty());
     }
@@ -110,7 +110,7 @@ class AuthorControllerIT {
     @Test
     void findBy_NotFound() {
         AuthorRequest authorRequest = new AuthorRequest();
-        authorRequest.setUsername("dickens");
+        authorRequest.setUserName("dickens");
         authorRequest.setPageNumber(0);
         authorRequest.setPageSize(3);
 

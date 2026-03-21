@@ -36,7 +36,7 @@ The AuthorController has these endpoints:
         * String firstName
         * String lastName
         * String email
-        * String username
+        * String userName
         * int pageNumber - which page to return
         * int pageSize - max entries per page
         * Sort sort - Sort ascending/descending and which fields to sort on

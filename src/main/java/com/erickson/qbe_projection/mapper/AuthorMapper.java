@@ -12,7 +12,7 @@ public class AuthorMapper {
         authorResponse.setFirstName(authorEntity.getFirstName());
         authorResponse.setLastName(authorEntity.getLastName());
         authorResponse.setEmail(authorEntity.getEmail());
-        authorResponse.setUsername(authorEntity.getUsername());
+        authorResponse.setUserName(authorEntity.getUserName());
 
         if (authorEntity.getBooks() != null) {
             authorResponse.setBooks(authorEntity.getBooks().stream()
@@ -28,7 +28,7 @@ public class AuthorMapper {
         authorEntity.setFirstName(authorRequest.getFirstName());
         authorEntity.setLastName(authorRequest.getLastName());
         authorEntity.setEmail(authorRequest.getEmail());
-        authorEntity.setUsername(authorRequest.getUsername());
+        authorEntity.setUserName(authorRequest.getUserName());
 
         return authorEntity;
     }

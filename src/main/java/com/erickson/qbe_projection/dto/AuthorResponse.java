@@ -11,7 +11,7 @@ public final class AuthorResponse {
     private String firstName;
     private String lastName;
     private String email;
-    private String username;
+    private String userName;
 
     private List<BookResponse> books;
 }

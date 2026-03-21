@@ -27,7 +27,7 @@ public final class AuthorEntity {
     String firstName;
     String lastName;
     String email;
-    String username;
+    String userName;
 
     // Always fetch all related Books - verify the projection does not fetch books
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)

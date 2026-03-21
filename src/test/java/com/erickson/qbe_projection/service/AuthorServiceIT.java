@@ -46,7 +46,7 @@ class AuthorServiceIT {
         assertEquals(authorId, authorResponse.getAuthorId());
         assertEquals("Agatha", authorResponse.getFirstName());
         assertEquals("Christie", authorResponse.getLastName());
-        assertEquals("agatha", authorResponse.getUsername());
+        assertEquals("agatha", authorResponse.getUserName());
         assertEquals("agatha@test.net", authorResponse.getEmail());
 
         assertTrue(authorResponse.getBooks().isEmpty());
@@ -60,7 +60,7 @@ class AuthorServiceIT {
         assertEquals(authorId, authorResponse.getAuthorId());
         assertEquals("Jane", authorResponse.getFirstName());
         assertEquals("Austen", authorResponse.getLastName());
-        assertEquals("jane", authorResponse.getUsername());
+        assertEquals("jane", authorResponse.getUserName());
         assertEquals("jane@test.net", authorResponse.getEmail());
 
         for (BookResponse book : authorResponse.getBooks()) {
@@ -91,7 +91,7 @@ class AuthorServiceIT {
         assertEquals(authorId, authorResponse.getAuthorId());
         assertEquals("Alexandre", authorResponse.getFirstName());
         assertEquals("Dumas", authorResponse.getLastName());
-        assertEquals("alexandre", authorResponse.getUsername());
+        assertEquals("alexandre", authorResponse.getUserName());
         assertEquals("alex@test.net", authorResponse.getEmail());
 
         for (BookResponse book : authorResponse.getBooks()) {
@@ -149,7 +149,7 @@ class AuthorServiceIT {
     @Test
     void findBy_MissingPagination() {
         AuthorRequest authorRequest = new AuthorRequest();
-        authorRequest.setUsername("alexandre");
+        authorRequest.setUserName("alexandre");
         AuthorResponses authorResponses = authorService.findBy(authorRequest);
 
         assertEquals(1, authorResponses.getTotalElements());
@@ -161,7 +161,7 @@ class AuthorServiceIT {
         assertEquals(2L, authorResponse.getAuthorId());
         assertEquals("Alexandre", authorResponse.getFirstName());
         assertEquals("Dumas", authorResponse.getLastName());
-        assertEquals("alexandre", authorResponse.getUsername());
+        assertEquals("alexandre", authorResponse.getUserName());
         assertEquals("alex@test.net", authorResponse.getEmail());
         assertEquals(3, authorResponse.getBooks().size());
     }
@@ -183,7 +183,7 @@ class AuthorServiceIT {
         assertEquals(4L, authorResponse.getAuthorId());
         assertEquals("Charles", authorResponse.getFirstName());
         assertEquals("Dickens", authorResponse.getLastName());
-        assertEquals("charles", authorResponse.getUsername());
+        assertEquals("charles", authorResponse.getUserName());
         assertEquals("charles@test.net", authorResponse.getEmail());
         assertTrue(authorResponse.getBooks().isEmpty());
     }

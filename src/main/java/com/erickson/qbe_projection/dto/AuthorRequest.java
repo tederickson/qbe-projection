@@ -9,5 +9,5 @@ public final class AuthorRequest extends PageableRequest {
     private String firstName;
     private String lastName;
     private String email;
-    private String username;
+    private String userName;
 }
