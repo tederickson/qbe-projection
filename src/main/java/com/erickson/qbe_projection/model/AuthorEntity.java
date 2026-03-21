@@ -1,5 +1,6 @@
 package com.erickson.qbe_projection.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,8 @@ public final class AuthorEntity {
     String firstName;
     String lastName;
     String email;
+
+    @Column(name = "username")
     String userName;
 
     // Always fetch all related Books - verify the projection does not fetch books
