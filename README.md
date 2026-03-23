@@ -3,10 +3,13 @@
 A Spring Boot Query by Example with Hibernate Projection application inspired by Dan Vega's tutorial on simplifying
 GraphQL by using Query By Example.
 
-Paramount in all microservice designs is [Seperation Of Concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)
-
 Check out Dan's code and documentation
 of [traditional vs QBE approach](https://github.com/danvega/graphql-qbe/blob/main/README.md)
+
+Paramount in all microservice designs is [Seperation Of Concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)
+No matter how much the database changes, the REST clients are not affected.
+I could add auditing and versions tomorrow and the REST clients would not be affected because the Mappers would still
+produce the same REST outputs.
 
 ## Project Requirements
 
