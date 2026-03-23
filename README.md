@@ -29,11 +29,11 @@ mvn spring-boot:run
 
 The AuthorController has these endpoints:
 
-* Get "/id/{id}" - returns AuthorResponse
+* Get "/v1/author/id/{id}" - returns AuthorResponse
 
-* Get "/first_name/{firstName}" - returns AuthorDTOs which is a list of a Hibernate projection
+* Get "/v1/author/first_name/{firstName}" - returns AuthorDTOs which is a list of a Hibernate projection
 
-* Post "/" takes an AuthorRequest and returns all rows matching the parameters in an AuthorResponses object.
+* Post "/v1/author/" takes an AuthorRequest and returns all rows matching the parameters in an AuthorResponses object.
     * AuthorRequest
         * String firstName
         * String lastName
@@ -52,7 +52,7 @@ AuthorResponses contains
 
 The BookController has these endpoints:
 
-* Post getBooksContainingTitle(takes a BookRequest and returns all rows containing (case insensitive) title
+* Post "/v1/books" takes a BookRequest and returns all rows containing (case insensitive) title
     * BookResponses contains:
         * List<BookResponse> books
         * int currentPage
