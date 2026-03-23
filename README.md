@@ -3,8 +3,7 @@
 A Spring Boot Query by Example with Hibernate Projection application inspired by Dan Vega's tutorial on simplifying
 GraphQL by using Query By Example.
 
-GraphQL uses the GraphQlRepository annotation and QueryByExampleExecutor interface instead of a long list of declared
-methods.
+Paramount in all microservice designs is [Seperation Of Concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)
 
 Check out Dan's code and documentation
 of [traditional vs QBE approach](https://github.com/danvega/graphql-qbe/blob/main/README.md)
