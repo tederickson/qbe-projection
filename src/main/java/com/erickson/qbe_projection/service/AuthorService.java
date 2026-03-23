@@ -42,12 +42,11 @@ public class AuthorService {
 
         AuthorResponses authorResponses = new AuthorResponses();
 
-        PageableUtil.buildPageableFromAuthors(authorResponses, results);
+        PageableUtil.buildPageable(authorResponses, results);
         authorResponses.setAuthors(results.stream().map(AuthorMapper::mapAuthorEntityToAuthorResponse).toList());
 
         return authorResponses;
     }
-
 
     public AuthorDTOs findByFirstName(String firstName) {
         if (firstName == null || firstName.isEmpty()) {

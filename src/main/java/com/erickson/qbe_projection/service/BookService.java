@@ -36,7 +36,7 @@ public class BookService {
         Page<BookEntity> results = bookRepository.findAll(example, pageable);
         BookResponses bookResponses = new BookResponses();
 
-        PageableUtil.buildPageableFromBooks(bookResponses, results);
+        PageableUtil.buildPageable(bookResponses, results);
         bookResponses.setBooks(results.stream().map(BookMapper::mapBookEntityToBookResponse).toList());
 
         return bookResponses;

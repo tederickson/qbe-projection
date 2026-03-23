@@ -2,8 +2,6 @@ package com.erickson.qbe_projection.service;
 
 import com.erickson.qbe_projection.dto.PageableRequest;
 import com.erickson.qbe_projection.dto.PageableResponse;
-import com.erickson.qbe_projection.model.AuthorEntity;
-import com.erickson.qbe_projection.model.BookEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,13 +17,7 @@ public class PageableUtil {
         return PageRequest.of(pageableRequest.getPageNumber(), pageSize, pageableRequest.getSort());
     }
 
-    public static void buildPageableFromAuthors(PageableResponse pageableResponse, Page<AuthorEntity> results) {
-        pageableResponse.setCurrentPage(results.getNumber());
-        pageableResponse.setTotalPages(results.getTotalPages());
-        pageableResponse.setTotalElements(results.getTotalElements());
-    }
-
-    public static void buildPageableFromBooks(PageableResponse pageableResponse, Page<BookEntity> results) {
+    public static <T> void buildPageable(PageableResponse pageableResponse, Page<T> results) {
         pageableResponse.setCurrentPage(results.getNumber());
         pageableResponse.setTotalPages(results.getTotalPages());
         pageableResponse.setTotalElements(results.getTotalElements());
