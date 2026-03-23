@@ -20,8 +20,8 @@ class BookControllerIT {
     @LocalServerPort
     private int port;
 
-    private String createURLWithPort(String uri) {
-        return "http://localhost:" + port + uri;
+    private String createURLWithPort() {
+        return "http://localhost:" + port + "/v1/books/";
     }
 
     @Test
@@ -29,7 +29,7 @@ class BookControllerIT {
         BookRequest bookRequest = new BookRequest();
         bookRequest.setTitle("abracadabra");
 
-        String url = createURLWithPort("/v1/books/");
+        String url = createURLWithPort();
         BookResponses bookResponses = restTemplate.postForEntity(url, bookRequest, BookResponses.class).getBody();
 
         assertNotNull(bookResponses);
@@ -45,7 +45,7 @@ class BookControllerIT {
         BookRequest bookRequest = new BookRequest();
         bookRequest.setTitle("THE");
 
-        String url = createURLWithPort("/v1/books/");
+        String url = createURLWithPort();
         BookResponses bookResponses = restTemplate.postForEntity(url, bookRequest, BookResponses.class).getBody();
 
         assertNotNull(bookResponses);
@@ -57,6 +57,13 @@ class BookControllerIT {
 
         for (BookResponse bookResponse : bookResponses.getBooks()) {
             assertTrue(bookResponse.getTitle().toLowerCase().contains("the"));
+
+            if (bookResponse.getTitle().equals("The Man in the Iron Mask")) {
+                assertEquals(3, bookResponse.getComments().size());
+            }
+            else {
+                assertTrue(bookResponse.getComments().isEmpty());
+            }
         }
     }
 
@@ -66,7 +73,7 @@ class BookControllerIT {
         bookRequest.setTitle("THE ");
         bookRequest.setPageNumber(200);
 
-        String url = createURLWithPort("/v1/books/");
+        String url = createURLWithPort();
         BookResponses bookResponses = restTemplate.postForEntity(url, bookRequest, BookResponses.class).getBody();
 
         assertNotNull(bookResponses);
